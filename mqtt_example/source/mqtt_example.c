@@ -66,7 +66,7 @@
 /*! @brief MQTT client ID. */
 #define EXAMPLE_MQTT_CLIENT_ID "k64"
 
-#define LOCAL_BROKER
+//#define LOCAL_BROKER
 
 #ifdef LOCAL_BROKER
 /*! @brief MQTT server host name or IP address. */
@@ -79,13 +79,13 @@
 #define EXAMPLE_MQTT_SERVER_PORT 1883
 #else
 /*! @brief MQTT server host name or IP address. */
-#define EXAMPLE_MQTT_SERVER_HOST "postman.cloudmqtt.com"
+#define EXAMPLE_MQTT_SERVER_HOST "io.adafruit.com"
 
-#define EXAMPLE_MQTT_USER "nico"
-#define EXAMPLE_MQTT_PSWD "remi"
+#define EXAMPLE_MQTT_USER "snss"
+#define EXAMPLE_MQTT_PSWD "aio_SZdB66d5bJOBPtLXYFJ28xz3t9S9"
 
 /*! @brief MQTT server port number. */
-#define EXAMPLE_MQTT_SERVER_PORT 13862
+#define EXAMPLE_MQTT_SERVER_PORT 1883
 #endif
 
 /*! @brief Stack size of the temporary lwIP initialization thread. */
@@ -225,8 +225,8 @@ static void mqtt_incoming_data_cb(void *arg, const u8_t *data, u16_t len, u8_t f
  */
 static void mqtt_subscribe_topics(mqtt_client_t *client)
 {
-    static const char *topics[] = {"/sprinkler"};
-    int qos[]                   = {1};
+    static const char *topics[] = {"snss/feeds/sprinkler"};
+    int qos[]                   = {0};
     err_t err;
     int i;
 
@@ -330,7 +330,7 @@ static void mqtt_message_published_cb(void *arg, err_t err)
  */
 static void publish_humidity(void *ctx)
 {
-    static const char *topic   = "/humidity";
+    static const char *topic   = "snss/feeds/humidity";
     static char message[10];
 
     LWIP_UNUSED_ARG(ctx);
@@ -367,7 +367,7 @@ static void app_thread(void *arg)
     	PRINTF("Error creating the events group\r\n");
     }
 
-    xTimerSensor = xTimerCreate("TimerSns", 1000 / portTICK_PERIOD_MS, pdTRUE, (void*)&timerId, sensor_timer_callback);
+    xTimerSensor = xTimerCreate("TimerSns", 5000 / portTICK_PERIOD_MS, pdTRUE, (void*)&timerId, sensor_timer_callback);
     if( xTimerSensor == NULL ) {
     	PRINTF("Error creating the sensors timer\r\n");
     }
